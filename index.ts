@@ -2,7 +2,9 @@ import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const libFolder = 'libs';
+const clientFolder = 'client';
 let libFiles = [];
+let clientFiles = [];
 // const buildsMatchers = new Map<string, () => Response>();
 const init = async () => {
   // const builds = await Bun.build({
@@ -23,6 +25,7 @@ const init = async () => {
   //   }));
   // }
   libFiles = await getFiles(libFolder)
+  clientFiles = await getFiles(clientFolder)
 }
 
 await init();
@@ -45,9 +48,18 @@ export const server = Bun.serve({
 
     const { pathname } = new URL(req.url);
     const filePath =  `${libFolder}${pathname}`;
-    
+
     if (libFiles.includes(filePath) && req.method === "GET") {
       return new Response(Bun.file(filePath), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    };
+
+    const clientPath =  `${clientFolder}${pathname}`;
+    if (clientFiles.includes(clientPath) && req.method === "GET") {
+      return new Response(Bun.file(clientPath), {
         headers: {
           'Content-Type': 'application/json',
         },
