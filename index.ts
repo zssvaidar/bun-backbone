@@ -31,8 +31,6 @@ async function getFiles( directoryPath ) {
     }
 }
 
-
-
 export const server = Bun.serve({
   port: 3000,
   async fetch(req, server) {
@@ -48,14 +46,15 @@ export const server = Bun.serve({
       });
     };
 
-    return new Response(Bun.file(import.meta.dir + "/index.html"),
-    {
-      status: 200,
-      headers:{
-        "Content-Type": "text/html",
-      }
-    });
-    // return new Response("data");
-    // return new Response(JSON.stringify({ status: 404, message: "Not found" }), { status: 404 });
+    if (pathname == '/' || pathname.endsWith("/index.html"))
+      return new Response(Bun.file(import.meta.dir + "/index.html"),
+      {
+        status: 200,
+        headers:{
+          "Content-Type": "text/html",
+        }
+      });
+
+    return new Response(JSON.stringify({ status: 404, message: "Not found" }), { status: 404 });
   },
 });
