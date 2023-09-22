@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+    <body>
+        <div>123</div>
+
+        <script src="./underscore-umd.js"></script>
+        <script src="./backbone.js"></script>
+
+        <script>
+            var  Person = Backbone.Model.extend();
+            var person = new Person();
+            person.set({ fname: "F_name", lname:"L_name"});  
+            document.write("What's my name: ", person.get('fname'));
+        </script>
+
+    </body>
+</html>
