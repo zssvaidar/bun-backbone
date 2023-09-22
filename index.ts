@@ -3,17 +3,25 @@ import { join } from 'node:path';
 
 const libFolder = 'libs';
 let libFiles = [];
+// const buildsMatchers = new Map<string, () => Response>();
 const init = async () => {
-  const builds = await Bun.build({
-    entrypoints: ['./hydrate.tsx'],
-    target: "browser",
-    splitting: true,
-    minify: {
-      identifiers: true,
-      syntax: true,
-      whitespace: true,
-    },
-  });
+  // const builds = await Bun.build({
+  //   entrypoints: ['./hydrate.tsx'],
+  //   target: "browser",
+  //   splitting: true,
+  //   minify: {
+  //     identifiers: true,
+  //     syntax: true,
+  //     whitespace: true,
+  //   },
+  // });
+  // for (const build of builds.outputs) {
+  //   buildsMatchers.set(build.path.substring(1), () => new Response(build.stream(), {
+  //     headers: {
+  //       "Content-Type": build.type,
+  //     },
+  //   }));
+  // }
   libFiles = await getFiles(libFolder)
 }
 
@@ -34,7 +42,7 @@ async function getFiles( directoryPath ) {
 export const server = Bun.serve({
   port: 3000,
   async fetch(req, server) {
-    
+
     const { pathname } = new URL(req.url);
     const filePath =  `${libFolder}${pathname}`;
     
